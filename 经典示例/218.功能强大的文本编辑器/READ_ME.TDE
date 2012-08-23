@@ -1,0 +1,600 @@
+
+                     TDE, the Thomson-Davis Editor
+                              Version 3.1
+                            August 29, 1993
+                              Frank Davis
+
+
+Author:
+
+               Author:          Frank Davis
+
+               Program name:    TDE, the Thomson-Davis Editor
+                                version 3.1
+
+               e-mail address:  fmd@tifton.cpes.peachnet.edu
+
+               Motto:           I'm stupid, and proud of it.
+
+               Home address:    102 Starr Street
+                                Tifton, Georgia  31794
+                                USA
+
+               Work address:    U.S. Department of Agriculture
+                                Agricultural Research Service
+                                Southeast Watershed Research Laboratory
+                                Georgia Coastal Plain Experiment Station
+                                Tifton, Georgia  31793
+                                USA
+
+
+Based on an editor by:          Douglas Thomson
+                                c/- Computing
+                                M.U.C.G.
+                                Switchback Road
+                                Churchill
+                                Victoria   3842
+                                AUSTRALIA
+                                doug@giaeb.cc.monash.edu.au
+
+                                Doug's old e-mail address was doug@giaea.oz
+
+
+Contributions by:
+
+   Tom Waters, twaters@relay.nswc.navy.mil - testing/comments/code since 1.0
+     (Tom can be reached by BBS (301)-596-1044)
+
+   Pierre Jelenc, pcj1@columbia.edu - language support, testing/code/comments
+
+   Dave Regan, regan@jacobs.cs.orst.edu - basic detab and entab code
+
+   David Merrill, u09606@uicvm.uic.edu - testing/comments/search suggestion
+
+   Jim Lee, jlee@ece.orst.edu - basic code for finding signatures in tdecfg.exe
+
+   James H. Thompson, jimmy_t@verifone.com - corrections for my "improvements"
+                                             to Jim Lee's code.
+
+
+Contacts:
+
+   Pierre Jelenc, pcj1@columbia.edu, will maintain and
+   distribute documentation and support files for translated versions of
+   TDE.  Some users are interested in using TDE with non-English
+   languages.  Check with Pierre before you translate the documentation,
+   as he may have the language version you need.  Incidentally, Pierre
+   is also developing a language independent sort program.
+
+   For those in the Department of Defence, Tom Waters,
+   twaters@relay.nswc.navy.mil, will be available to answer questions
+   and provide support.  He has worked with TDE source code since
+   version 1.0, so he knows how the guts of the program works.  Usually,
+   the hardware and software at DoD are from the same manufacturor, so
+   he may have a version of TDE that takes advantage of the capabilities
+   of those machines.
+
+
+File descriptions:
+
+   TDE.EXE       TDE executable for IBM PC or compatible
+   TDE.DOC       TDE user's manual
+   TDE.CFG       configuration file
+
+   TDECFG.EXE    utility to customize color and keys in tde.exe
+   TDECFG.DOC    tdecfg user's manual
+   SAMPLE.HLP    sample file for redefining help screen
+
+   READ_ME.TDE   this file
+
+
+      All source for TDE editor, not needed unless you want to modify TDE.
+
+   INT24.ASM     critical error replacement - interrupt 24
+   SIMUL101.ASM  utility to simulate 101 scan codes on 83/84 key keyboards
+   BLOCK.C       line, stream, and box block functions
+   CONSOLE.C     video and keyboard routines
+   CRITER.C      critical error prompt and info
+   DIFF.C        diff algorithms
+   DIRLIST.C     directory list functions
+   ED.C          basic editor functions
+   FILE.C        readin and writing files
+   FINDREP.C     Boyer-Moore search routines
+   HWIND.C       initialization and display routines
+   MACRO.C       keyboard macros
+   MAIN.C        main function and hardware routines
+   PORT.C        routines for MSC and BC
+   REGX.C        NFA pattern matching machine
+   SORT.C        stable quicksort
+   TAB.C         entab and detab routines
+   TDEASM.C      pointer/string/display assembly routines
+   UTILS.C       misc. editor functions
+   WINDOW.C      window routines
+   WORDWRAP.C    word wrap functions
+   COMMON.H      external global variable declarations
+   CRITER.H      critical error info
+   DEFAULT.H     default function key assignments
+   DEFINE.H      editor function defs
+   GLOBAL.H      initial global variable declarations and editor function array
+   HELP.H        intro and help screen
+   PROMPTS.H     all user prompts
+   TDEFUNC.H     prototypes for all functions
+   TDESTR.H      defs for all structures and defines
+   MAKETDE       make file -- MSC, BC, QuickC
+
+
+  All source for configuration utility, not needed unless you want to modify.
+
+   TDECFG.C      main configuration routines
+   CFGCOLOR.C    color utility routines
+   CFGFILE.C     parse routines for configuration file
+   CFGHELP.C     redefine the help screen
+   CFGKEYS.C     key redefinition routines
+   CFGMACRO.C    save macro file in tde.exe
+   CFGMODES.C    default editor routines
+   TDECFG.H      global structures and prototypes for tdecfg
+   CFGCOLOR.H    defines for color utility
+   CFGFILE.H     structures for parse routines
+   CFGHELP.H     defines for rewriting help screen
+   CFGKEYS.H     structures for all available keys and functions
+   CFGMACRO.H    defines for macro screen
+   CFGMODES.H    structures for default editor modes
+   MAKECFG       config make file
+
+
+Disclaimer:
+
+  This program is provided "as is" without warranty of any kind, either
+expressed or implied, including, but not limited to the fitness for a
+particular purpose.  You assume all risk for the use, inability to use,
+misuse, or abuse of this program.  In any event, you (and not Frank Davis)
+assume the entire cost of loss of use; loss of information; loss of
+savings; loss of business profits, business interruption; mental anguish,
+mental distress; all direct, consequential, or incidental damages or
+losses; all necessary servicing, repair, or correction; and all physical
+and mental health problems, acute or chronic, caused by direct or indirect
+use of this program by you or any of your relatives, friends, acquain-
+tances, co-workers, or otherwise fellow man either known or unknown by
+you.
+
+  Your use of this software constitutes agreement with and notice of
+acknowledgement of the above heretofore stated warranty and limitations.
+In addition with your agreement, you henceforth and forever relinquish,
+waive, and forfeit all claims, rights, rulings, or judgements against the
+forementioned author of said software; however, you retain the right to
+keep your first born.  If you decide that it is in your best interest to
+waive your right to your first born child, the author is in no way
+obligated to accept or support the offspring regardless of age, marital
+or employment status of said offspring.
+
+  This program is not a product of the U.S. Department of Agriculture or
+any other branch of the U.S. Government.  I work on TDE at night,
+weekends, and holidays on my own personal time, Frank Davis.
+
+
+Claimer:
+
+  I use this program all-day-every-day on all of my FORTRAN, C, and
+assembly source code at home and at work, Frank Davis.
+
+
+Licensing:
+
+  This program is released into the public domain.  You may use and
+distribute it freely.  There is no copyright, no fee for use, no
+licensing, or no registration.  This editor is not user supported,
+corporate sponsored, or government subsidized - it is sustained and
+maintained solely by Frank Davis.  This editor was written for use not
+only as a simple text editor but also as a learning tool.  Examine the
+code and discover the basics of editor construction.  Experiment a
+little and add your favorite functions or modify the existing functions
+to suit your needs/requirements/tastes/etc.  If anyone includes TDE with
+their own software, please use common courtesy and give Doug Thomson and
+Frank Davis credit for their work (that's the only payment I ask).  If
+you release any changes or additions to the TDE editor, please observe
+the original spirit of Doug Thomson's DTE 5.1 and release the changes as
+public domain software.
+
+
+
+Legal Legal Stuff:
+
+  Six years ago, as an employee of the Federal government, as part of
+my official duties, I wrote several editors that use a double linked
+list.  The new scheme in TDE 2.2 uses a double linked list.  Some of the
+concepts and/or code and/or techniques that I used to develop those
+editors as part of my official duties are incorporated into TDE 2.2.
+Being that my current official duties as an employee of the Federal
+government requires that I maintain and support those editors, as a
+matter of law and ethics, version 3.1 of TDE is released into the public
+domain.  It's not so much that I want to release TDE into the public
+domain, but more so, it's the law that requires that I release TDE into
+the public domain.  Not only is TDE 3.1 based on DTE 5.1, the public
+domain editor by Doug Thomson, but it is also based on works of the
+United States government, written and currently maintained by my
+ownself, Frank.  Many of the ideas that are incorporated into TDE were
+derived from editing tasks needed on the job.  Copyrighting off-the-job
+what I do on-the-job would not be ethical.
+
+
+   See:
+
+     Title 17 United States Code (Copyright Act of 1976):
+
+     Section 101, page 1292-1293:
+
+       "Definitions"
+
+          'A "derivative work" is a work based upon one or more preexisting
+           works, such as a translation, musical arrangement, dramatization,
+           fictionalization, motion picture version, sound recording, art
+           reproduction, abridgement, condesation, or any other form in
+           which a work may be recast, transformed, or adapted.  A work
+           consisting of editorial revisions, annotations, elaborations,
+           or other modifications which, as a whole, represent an original
+           work of authorship, is a "derivative work".'
+
+          'A "work of the United States Government" is a work prepared
+           by an officer or employee of the United States Government
+           as part of that person's official duties.'
+
+
+     Section 105, page 1310:
+
+        "Subject matter of copyright:  United States Government works"
+
+          'Copyright protection under this title is not available for
+           any work of the United States Government, but the United States
+           Government is not precluded from receiving and holding copyrights
+           transferred to it by assignment, bequest, or otherwise.'
+
+   See also:
+
+     Executive Order 12674 of April 12, 1989 (as modified by E.O. 12731)
+
+       Part I--Principles of Ethical Conduct:
+
+          Section 101. Principles of Ethical Conduct, paragraph (n).
+
+            'Employees shall endeavor to avoid any actions creating
+             the appearance that they are violating the law or the
+             ethical standards promulgated pursuant to this order.'
+
+   See also:
+
+      5 Code of Federal Regulations, 57 Federal Register 35006-35067:
+
+        Section 2635.101, "Basic obligation of public service"
+
+
+          2635.101 (b)(10):
+
+            'Employees shall not engage in outside employment or
+             activities, including seeking or negotiating for
+             employment, that conflict with official Government
+             duties and responsibilities.'
+
+
+          2635.101 (b)(14):
+
+            'Employees shall endeavor to avoid any actions creating
+             the appearance that they are violating the law or the
+             ethical standards set forth in this part.  Whether
+             particular circumstances create an appearance that the
+             law or these standards have been violated shall be
+             determined from the perspective of a reasonable person
+             with knowledge of the relevant facts.'
+
+
+Distribution Sites:
+
+  You will always be able to find the latest version of TDE in the
+SIMTEL20 archives in the PD1:<MSDOS.EDITOR> directory, in Library 16 of
+Utilforum/Tips forum in PC MagNet on CompuServe (search for TDE as the
+keyword), or on the Keystone Connection BBS, Keystone Heights, Florida,
+USA, in directory 9, DOS help/utils.  I do not upload TDE to any other
+file archive, Frank.
+
+
+=============================  cut here  =================================
+
+                    Standard SIMTEL20 download Info
+
+                         ----------------------
+
+SIMTEL20 allows only nine ANONYMOUS FTP logins during weekday prime
+time, 5am to 3pm Mountain Time (GMT-7), but 27 otherwise.
+
+SIMTEL20 files are also available by anonymous ftp from mirror sites
+OAK.Oakland.Edu (141.210.10.117), wuarchive.wustl.edu (128.252.135.4),
+archive.orst.edu (128.193.2.13), ftp.uu.net (137.39.1.9), nic.funet.fi
+(128.214.6.100), src.doc.ic.ac.uk (146.169.3.7), nic.switch.ch
+(130.59.1.40), archie.au (139.130.4.6), NCTUCCCA.edu.tw (140.111.3.21),
+by e-mail through the BITNET/EARN file servers, or by uucp from UUNET's
+1-900-GOT-SRCS.  See UUNET file uunet!~/info/archive-help for details.
+
+OAK.Oakland.Edu is the primary mirror site for WSMR-SIMTEL20.Army.Mil.
+All other mirror sites (except wuarchive) and all LISTSERV and TRICKLE
+servers get their SIMTEL20 files from OAK instead of SIMTEL20 because
+it is much faster and allows more simultaneous ftp connections.  OAK is
+always "in sync" with SIMTEL20 because I maintain it, in addition to my
+duties at SIMTEL20.  I run OAK's mirror program whenever new files are
+added at SIMTEL20.
+
+If you cannot access them via FTP or e-mail, most SIMTEL20 MSDOS
+files, including the PC-Blue collection, are also available for
+downloading from Detroit Download Central (313) 885-3956.  DDC
+has multiple lines which support 300/1200/2400/9600/14400 bps
+(103/212/V22bis/HST/V32bis/V42bis/MNP).  This is a subscription system
+with an average hourly cost of 17 cents.  It is also accessable on
+Telenet via PC Pursuit and on Tymnet via StarLink outdial.  New files
+uploaded to SIMTEL20 are usually available on DDC within 24 hours.
+
+CD-ROM copies of the SIMTEL20 MS-DOS collection are available from
+Coyote Data, Ltd., 1142 N. Main, Rochester, MI 48307, telephone
+(800) 451-7093 or (313) 656-8265, or FAX (313) 651-4071.  E-mail:
+71756.444@CompuServe.COM  or  CIS 71756,444.  The consumer version of
+their Oasis Library CD-ROM re-catalogs the MS-DOS files of SIMTEL20,
+adds category and key-word search and retrieval utilities, and provides
+on-line file descriptions.  Quarterly update subscriptions are available.
+
+CD-ROM copies of the SIMTEL20 MS-DOS, Macintosh and Unix-C collections
+are available from Walnut Creek CDROM, 1547 Palos Verdes, Suite 260,
+Walnut Creek, CA 94596-2228, telephone (800) 786-9907 or (510) 947-5996,
+or FAX (510) 947-1644.  E-mail: rab@cdrom.com.  Quarterly update sub-
+scriptions are available.
+
+Keith Petersen
+
+                         ----------------------
+
+                        Additional SIMTEL20 info
+
+                         ----------------------
+
+
+PD1:<MSDOS.FILEDOCS>CHANGES.DOC            Last revised: March 29, 1993
+
+            WSMR-SIMTEL20.Army.Mil switches to ZIP 2.0
+
+Effective April 2, 1993 many of the new ZIP files uploaded to SIMTEL20
+will be in the public domain ZIP version 2.0 format.  After that date
+the index files SIMIBM.ZIP and SIMLIST.ZIP will be created in the new
+format.
+
+SIMTEL20 has standardized on the Info-ZIP group's ZIP and UNZIP because
+they are freely distributable and they have no restrictions on exporting.
+The latest version of Info-ZIP's ZIP and UNZIP can always be found in
+directory PD1:<MSDOS.ZIP> and will always have the name "Info-ZIP" in
+the description to make them easy to locate.
+
+PKWare's PKZIP 2.x will not be offered due to export restrictions.
+Older versions of PKZIP will be deleted to avoid confusion due to
+the fact that they cannot handle the ZIP version 2.0 format files.
+
+Keith
+--
+Keith Petersen
+Maintainer of the MS-DOS archive at WSMR-SIMTEL20.Army.Mil [192.88.110.20]
+Internet: w8sdz@WSMR-SIMTEL20.Army.Mil   or     w8sdz@Vela.ACS.Oakland.Edu
+Uucp: uunet!umich!vela!w8sdz                         BITNET: w8sdz@OAKLAND
+
+=================================  end  ==================================
+
+
+                         Keystone Connection BBS
+
+  The Keystone Connection BBS (904)473-9790 is a free public board.  This
+is a multiline BBS with no restrictions.  The latest version of TDE will
+always be available here.  USRobotics Dual Standard modems allow
+connections up through 16800 bps, so it will only take a few minutes to
+download the file.  TDE will be in directory 9, the DOS help/utils
+directory.  If you have any questions concerning the BBS, leave a message
+for the friendly sysop, Bruce McHollan.  If you have any questions
+concerning TDE, leave a message for me, Frank.  I usually drop by Keystone C.
+once or twice a week.
+
+
+Background:
+
+  At work, I have written several editors that may only be used for a
+certain type of file (almost an expert system).  I have always wanted to
+write a general purpose public domain text editor.  It seems none of the
+existing public domain or shareware editors have all of the features I
+like.  I'm stupid and proud of it.  Since I'm so stupid, the new editor
+should be really easy to use.  My wish list of features are:
+
+   Blocks:
+      Line, stream, and box blocks.
+      Move, delete, copy, kopy, overlay, fill, print, number, and sort.
+      Block actions within or between files.
+
+   Files:
+      Multiple files limited only by memory.
+      Text and binary files.
+
+   Windows:
+      Multiple windows limited only by memory.
+      Split screen horizontally and vertically
+      Changes to text in one window are updated in all windows of same file.
+      Interactively resize windows.
+      Two windows of same size so two files can be easily compared.
+
+   Search/Replace:
+      Ignore or Match case of pattern.
+      Prompt or no prompt replace.
+      Boyer-Moore pattern matching algorithm.
+
+   User Configuration:
+      Ability to assign any editor function to any recognized function key.
+      Redefine color attributes in all editor fields.
+      Change default editor settings.
+      Macro recording and playback.
+
+   Other:
+      Split/join line.
+      Lines as long a 1040 characters.
+      Paren balance.
+      Mode/information line.
+      Cursor sync.
+      Directory list
+      Ruler with a cursor pointer
+
+
+
+Douglas Thomson's editor, DTE 5.1:
+
+  Well, I found a public domain editor that had most of the features on my
+wish list.  The original code was extremely well documented.  That editor
+was DTE 5.1, written by Douglas Thomson, Gippsland, Victoria, Australia.
+So instead of writing an editor from scratch, I based my editor around
+Doug's well designed and documented program.   My editor was written using
+DTE 5.1 as an outline.  Doug, thanks a lot for releasing the source code
+for your editor.
+
+  DTE 5.1 is pretty much machine independent.  It runs on PC's, HP 3000's,
+and generic Unix system V release 2 systems.  It was designed to work well
+over slow communication lines, eg 1200 baud.  Screen updates are kept to a
+minimum which saves time and money when using dial-up phone lines.  DTE
+5.1 uses the WordStar/Turbo x style key definitions.  If you need an
+editor for use over slow communication terminals, check out Doug's editor.
+
+
+TDE, the Thomson-Davis Editor:
+
+  My dream editor was to be written specifically for PC's.  At work, we
+have an IBM mainframe.  The only reason I use the mainframe is for e-mail
+and for backup of my PC files (I have exaggerated a little).  I use my PC
+editors to compose my mail then upload to the mainframe to send it.  So, I
+really don't need or desire a machine independent editor.
+
+  Being that the big text buffer was replaced by a double linked list,
+most of the pointer arithmetic stuff went away.  Now that TDE can handle
+binary files, the '\0' and ^Z went away, too.
+
+  I modified almost all of the algorithms in the original DTE 5.1 editor
+and added several more.  The block and find/replace algorithms are
+completely rewritten.  Block operations now use line, box, and stream
+blocks.  Available block operations include move, delete, copy, kopy,
+fill, overlay, block expand tabs, block compress tabs, block compress
+indent tab, block print, block write to file, block upper case, block
+lower case, block strip hi bit, trim block, number box block, swap block,
+and sort box block (a few of these functions were available for stream
+blocks in the original DTE 5.1).  Block operations are allowed within or
+between files.  The "brute force" text find algorithm was replaced by the
+Boyer-Moore string matching algorithm, a very fast text search algorithm.
+A regular expression search for approximate pattern matching was added.
+The text display algorithms were rewritten.  Window operations were
+rewritten, enhanced, and streamlined.  Windows may now be split vertically
+as well as horizontally.  Support for lines as long as 1040 characters was
+added.  Horizontal scrolling/paging/panning are allowed.  A mode/
+information lite bar was added to display the various modes at the bottom
+of the screen.  Displayed in the lite bar are: number of open files and
+total number of windows, available memory for editing the current file or
+additional files, and the editor mode flags.  Displayed with the file name
+are:  file attributes, the total number of lines in the file (size), and
+the current line number and column number of the cursor.  The join line,
+split line, and dup line functions were added.  Any ASCII or Extended
+ASCII character can be entered into the text file by using the ALT-xxx
+method.  Several often used string routines were rewritten in assembly
+and optimized for 16 bit processors, which makes cursor movement very
+fast through any size file.  One function that I sorely missed, a simple
+undelete function, was added.  A few simple word processing functions
+were also added: word wrap, paragraph format, and left, right, and
+center justify functions.  A dynamic left margin was added for writers.
+Smart tabs were added for use with tables and formatted data files.  To
+make TDE a more "standard" editor, logical physical tabs were added.
+With TabInflate, the user no longer has to physically expand tabs, as
+TDE will inflate tabs on the screen.  Also added was a cursor sync
+function.  After using the sync function for a day, it became apparent
+that a hilited cursor line was needed to keep track of cursor positions
+in all windows.  A directory function was added so users may search
+directories for files to load.  The file loading feature was expanded to
+make TDE search a file list for a pattern.  Files are loaded only if the
+pattern is present.  Another useful feature, a key stroke record and
+playback (simple macros), was added to make simple, repititive, editing
+tasks easier; recursive macros are allowed.  A critical error handler
+was added to give the user more info on hardware faults.  To help users
+construct formatted data or formatted source code (FORTRAN) files, a
+ruler line with a column pointer was added.  Now, TDE will diff any two
+windows.  A configuration utility was written to allow the user to
+customize all colors and the 233 recognized function keys with no
+restrictions.  Users may now customize the sort sequence for
+Ignore/Match case, which allows for correct sorting of alphabets with
+characters in the Extended ASCII character set.  All keys, modes, and
+colors may be assigned from a configuration file.  For users who work
+with alphabets that contain special accent characters, any ASCII or
+Extended ASCII character may be assigned to unused function keys by
+permanently storing a macro definition file in tde.exe.  And last, an
+instant help screen with key definitions was added.
+
+
+Programming Notes:
+
+  The text buffer scheme was replaced by a double linked list.  During
+testing, I also implemented an array of text pointers.  Just thought
+a double linked list was easier.  Incidentally, in previous versions
+of the READ_ME.TDE file, I wrote that most commercial editors use a
+relocatable array of text pointers.  That's probably wrong  -- most
+commercial editors use a double linked list.  Even the editors that
+I wrote at work over the past six years use a double linked list.
+Oh well, just reinforcing how stupid I am.  I have trouble remembering
+what I did five minutes ago.
+
+  The 101 key keyboard simulation utility requires an assembler to produce
+object code.  If you don't have access to an assembler, you may comment
+out the calls to function simulate_enh_kbd( ) in main.c.  TDE will still
+take advantage of the 101 enhanced keyboard, but will not be able to use
+the simulated 101 keys on older 83/84 keyboard systems.
+
+  Several functions in TDE return an integer value that indicates whether
+or not an ERROR occured.  The variable name most often used to return the
+result is "rc".  For non-IBM mainframers, rc == return code.
+
+
+Further Reference/Reading:
+
+  "The Literature" is filled with all areas of text editing:  human
+factors, construction schemes, function definitions, pattern matching,
+documentation guidelines, and a proposed ANSI/ISO standard for editors.
+Some journals you might browse thru are Communications of the ACM,
+Journal of the ACM, Computing Surveys, Software-Practice and Experience,
+and SIAM Journal on Computing.
+
+  One particular publication you might browse is _ACM Sigplan Notices_
+16 (No. 6), June 1981, Proceedings of the ACM SIGPLAN SIGOA Symposium on
+Text Manipulation, Portland, Oregon, June 8-10, 1981 (ACM Order No.
+548810).  Several papers on text editing/manipulation were presented.
+One paper you might read is by Richard M. Stallman, "EMACS The
+Extensible, Customizable Self-Documenting Display Editor", pp 147-156.
+EMACS and EMACS subsets have been ported numerous times to most major
+operating systems.
+
+  A text that encourages good programming practices while including
+"real world" examples is by Brian W. Kernighan and P. J. Plauger,
+_Software Tools_, Addison-Wesley Publishing Company, Reading, Mass.,
+1976, ISBN 0-201-03669-X.  Incidentally, the authors present all the
+tools needed to construct a text editor.  You may recognize Brian
+Kernighan as a coauthor of _The C Programming Language_, 1978 and 1988,
+Prentice-Hall, Englewood Cliffs, New Jersey, ISBN 0-13-110362-8.  And,
+you may recognize P. J. Plauger as the secretary of X3J11, the ANSI
+technical subcommittee on C language standardization.
+
+
+Bug reports:
+
+  There are no bugs in TDE, only features that may inconvenience you. ;*)
+Please send inconvenience reports via e-mail, if at all possible, to
+fmd@tifton.cpes.peachnet.edu.  For y'all over there on CompuServe, my e-mail
+address is ">Internet:fmd@tifton.cpes.peachnet.edu" (don't type the quotes,
+just everything between them).  I'll try to respond as quickly as possible
+to reports received via e-mail.
+
+
+About the author of TDE, Frank Davis:
+
+  Frank Davis, a Ramblin' Wreck from Georgia Tech, graduated near the bottom
+of his class in 1983 with a BS in Information and Computer Science.  He can
+be found drinking massive quantities of beer in his underwear (boxer shorts)
+on his couch while watching college football and Atlanta Braves baseball on
+his 19 inch color TV.  Hobbies include:  sex, drugs, and rock 'n' roll.

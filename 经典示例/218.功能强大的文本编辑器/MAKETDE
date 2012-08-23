@@ -1,0 +1,237 @@
+#
+# Compilers supported == MSC 5.1, MSC 6.0ax, MSC 7.0, QC 2.5, and BCC 3.1
+# Makes supported     == Microsoft's nmake and Borland's make
+#
+# To make TDE with Microsoft compilers, change the defines as needed and type:
+#
+#      nmake maketde
+#
+# To make TDE with Borland's make, change the appropriate defines and type:
+#
+#      make -f maketde
+#
+#          Incidentally, Borland requires about twice as much room for
+#           assertions as Microsoft.  If the DGROUP is violated, either
+#           comment out some assertions in the TDE source code or turn
+#           assertions off altogether.
+
+
+PROJ      = tde
+
+
+#
+# Define your favorite compiler last
+#
+COMPILER   = QUICKC
+COMPILER   = BCC
+COMPILER   = MSC
+
+
+#
+# Define your favorite assembler last
+#
+ASSEMBLER  = MASM51
+ASSEMBLER  = QUICKASSEMBLER
+ASSEMBLER  = TASM
+ASSEMBLER  = MASM6
+
+
+#
+# Assertions may be turned off or on.  I usually leave assertions on.
+#
+ASSERTIONS = ON
+ASSERTIONS = OFF
+ASSERT     = TDE
+!IF "$(ASSERTIONS)" == "OFF"
+!UNDEF ASSERT
+!ENDIF
+
+
+#
+# Compiler and linker flags and switches.
+#
+!IF "$(COMPILER)" == "MSC"
+CC      = cl
+!IFDEF ASSERT
+CFLAGS  = /c /AM /W4 /Ot /D__MSC__
+!ELSE
+CFLAGS  = /c /AM /W4 /Ot /Gs /D__MSC__ /DNDEBUG
+!ENDIF
+LINK    = link
+LFLAGS  = /STACK:5632 /NOI
+
+!ELSE
+!IF "$(COMPILER)" == "QUICKC"
+CC      = qcl
+!IFDEF ASSERT
+CFLAGS  = /c /AM /D__MSC__ /Ot /W4
+!ELSE
+CFLAGS  = /c /AM /D__MSC__ /Ot /W4 /DNDEBUG
+!ENDIF
+LINK    = qlink
+LFLAGS  = /STACK:5632 /NOI
+
+!ELSE
+!IF "$(COMPILER)" == "BCC"
+CC      = bcc
+!IFDEF ASSERT
+CFLAGS  = -c -G -mm -O2 -tDe -w -N
+!ELSE
+CFLAGS  = -c -G -mm -O2 -tDe -w -DNDEBUG
+!ENDIF
+LINK    = tlink
+LFLAGS  = /Td /c
+
+!ELSE
+!ERROR I only know how to make MSC, QuickC, and BCC.
+!ENDIF
+!ENDIF
+!ENDIF
+
+
+#
+# Assembler flags and switches.
+#
+!IF "$(ASSEMBLER)" == "MASM51"
+AS      = MASM
+AFLAGS  = /c /MX
+
+!ELSE
+
+!IF "$(ASSEMBLER)" == "MASM6"
+AS      = ML
+AFLAGS  = /c /Cp /Zm
+
+!ELSE
+!IF "$(ASSEMBLER)" == "QUICKASSEMBLER"
+AS      = QCL
+AFLAGS  = /c
+
+!ELSE
+!IF "$(ASSEMBLER)" == "TASM"
+AS      = TASM
+AFLAGS  = /Mx
+!ELSE
+!ERROR I only know how to make MASM, QuickAssembler, and TASM.
+!ENDIF
+!ENDIF
+!ENDIF
+!ENDIF
+
+
+#
+# Define the compiler and assembler rules
+#
+.c.obj :
+        $(CC) $(CFLAGS) $<
+
+.asm.obj :
+        $(AS) $(AFLAGS) $<
+
+
+#
+# List the dependent obj files
+#
+TDEOBJS  = block.obj console.obj criterr.obj diff.obj dirlist.obj ed.obj\
+           file.obj findrep.obj hwind.obj main.obj macro.obj port.obj\
+           regx.obj sort.obj tab.obj tdeasm.obj utils.obj window.obj\
+           wordwrap.obj int24.obj simul101.obj
+
+
+all: $(PROJ).exe
+
+
+#
+# List the rules for the obj files.
+#
+BLOCK.obj    : BLOCK.c    tdestr.h common.h tdefunc.h define.h
+
+CONSOLE.obj  : CONSOLE.c  tdestr.h common.h tdefunc.h define.h
+
+CRITERR.obj  : CRITERR.c  tdestr.h common.h tdefunc.h define.h criterr.h
+
+DIFF.obj     : DIFF.c     tdestr.h common.h tdefunc.h define.h
+
+DIRLIST.obj  : DIRLIST.c  tdestr.h common.h define.h tdefunc.h
+
+ED.obj       : ED.c tdestr.h global.h tdefunc.h define.h default.h prompts.h
+
+FILE.obj     : FILE.c     tdestr.h common.h tdefunc.h define.h
+
+FINDREP.obj  : FINDREP.c  tdestr.h common.h tdefunc.h define.h
+
+HWIND.obj    : HWIND.c    tdestr.h common.h tdefunc.h define.h
+
+MACRO.obj    : MACRO.C    tdestr.h common.h tdefunc.h define.h
+
+MAIN.obj     : MAIN.c tdestr.h common.h tdefunc.h define.h default.h help.h
+
+PORT.obj     : PORT.c     tdestr.h common.h tdefunc.h define.h
+
+REGX.obj     : REGX.c     tdestr.h common.h tdefunc.h define.h
+
+SORT.obj     : SORT.c     tdestr.h common.h tdefunc.h define.h
+
+TAB.obj      : TAB.c      tdestr.h common.h tdefunc.h define.h
+
+TDEASM.obj   : TDEASM.c   tdestr.h common.h tdefunc.h define.h
+
+UTILS.obj    : UTILS.c    tdestr.h common.h tdefunc.h define.h
+
+WINDOW.obj   : WINDOW.c   tdestr.h common.h tdefunc.h define.h
+
+WORDWRAP.obj : WORDWRAP.c tdestr.h common.h tdefunc.h define.h
+
+int24.obj    : int24.asm
+
+simul101.obj : simul101.asm
+
+
+#
+# Once we get everything compiled, link with either Microsoft or Borland stuff.
+# Incidentally, blank lines are significant for the linker response files.
+#
+#  Borland linker
+#
+!IF "$(COMPILER)" == "BCC"
+$(PROJ).exe  : $(TDEOBJS)
+        $(LINK) $(LFLAGS) @&&%
+C0M  $(TDEOBJS)
+$*
+
+CM.LIB
+%
+!ELSE
+#
+# Microsoft linker
+#
+$(PROJ).exe : $(TDEOBJS)
+        echo >NUL @<<$(PROJ).crf
+block.obj+
+console.obj+
+criterr.obj+
+diff.obj+
+dirlist.obj+
+ed.obj+
+file.obj+
+findrep.obj+
+hwind.obj+
+macro.obj+
+main.obj+
+port.obj+
+regx.obj+
+sort.obj+
+tab.obj+
+tdeasm.obj+
+utils.obj+
+window.obj+
+wordwrap.obj+
+simul101.obj+
+int24.obj
+$(PROJ).EXE
+
+
+
+<<
+        ilink -a -e "$(LINK) $(LFLAGS) @$(PROJ).crf" $(PROJ)
+!ENDIF

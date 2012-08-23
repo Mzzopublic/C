@@ -1,0 +1,141 @@
+#
+# Compilers supported == MSC 5.1, MSC 6.0ax, MSC 7.0, QC 2.5, and BCC 3.1
+# Makes supported     == Microsoft's nmake and Borland's make
+#
+# To make TDECFG with Microsoft compilers, change the defines and type:
+#
+#      nmake makecfg
+#
+# To make TDECFG with Borland's make, change the appropriate defines and type:
+#
+#      make -f maketde
+#
+
+
+PROJ      = tdecfg
+
+
+#
+# Define your favorite compiler last
+#
+COMPILER   = QUICKC
+COMPILER   = BCC
+COMPILER   = MSC
+
+
+#
+# Assertions may be turned off or on.  I usually leave assertions on.
+#
+ASSERTIONS = ON
+ASSERTIONS = OFF
+ASSERT     = TDE
+!IF "$(ASSERTIONS)" == "OFF"
+!UNDEF ASSERT
+!ENDIF
+
+
+#
+# Compiler and linker flags and switches.
+#
+!IF "$(COMPILER)" == "MSC"
+CC      = cl
+!IFDEF ASSERT
+CFLAGS  = /c /AS /W4 /Ot /D__MSC__
+!ELSE
+CFLAGS  = /c /AS /W4 /Ot /Gs /D__MSC__ /DNDEBUG
+!ENDIF
+LINK    = link
+LFLAGS  = /STACK:8196 /NOI
+
+!ELSE
+!IF "$(COMPILER)" == "QUICKC"
+CC      = qcl
+!IFDEF ASSERT
+CFLAGS  = /c /AS /D__MSC__ /Ot /W4
+!ELSE
+CFLAGS  = /c /AS /D__MSC__ /Ot /W4 /DNDEBUG
+!ENDIF
+LINK    = qlink
+LFLAGS  = /STACK:8196 /NOI
+
+!ELSE
+!IF "$(COMPILER)" == "BCC"
+CC      = bcc
+!IFDEF ASSERT
+CFLAGS  = -c -G -ms -O2 -tDe -w -N
+!ELSE
+CFLAGS  = -c -G -ms -O2 -tDe -w -DNDEBUG
+!ENDIF
+LINK    = tlink
+LFLAGS  = /Td /c
+
+!ELSE
+!ERROR I only know how to make MSC, QuickC, and BCC.
+!ENDIF
+!ENDIF
+!ENDIF
+
+
+#
+# Define the compiler rules
+#
+.c.obj :
+        $(CC) $(CFLAGS) $<
+
+
+#
+# List the dependent obj files
+#
+CFGOBJS  = tdecfg.obj cfgcolor.obj cfgfile.obj cfghelp.obj cfgkeys.obj\
+           cfgmacro.obj cfgmodes.obj
+
+all: $(PROJ).exe
+
+
+#
+# List the rules for the obj files.
+#
+tdecfg.obj   : tdecfg.c   tdecfg.h
+
+cfgcolor.obj : cfgcolor.c tdecfg.h cfgcolor.h
+
+cfgfile.obj  : cfgfile.c  tdecfg.h cfgfile.h
+
+cfghelp.obj  : cfghelp.c  tdecfg.h cfghelp.h
+
+cfgkeys.obj  : cfgkeys.c  tdecfg.h cfgkeys.h
+
+cfgmacro.obj : cfgmacro.c tdecfg.h cfgmacro.h
+
+cfgmodes.obj : cfgmodes.c tdecfg.h cfgmodes.h
+
+
+#
+# Once we get everything compiled, link with either Microsoft or Borland stuff.
+# Incidentally, blank lines are significant for the linker response files.
+#
+!IF "$(COMPILER)" == "BCC"
+$(PROJ).exe  : $(CFGOBJS)
+        $(LINK) $(LFLAGS) @&&%
+C0S  $(CFGOBJS)
+$*
+
+CS.LIB
+%
+!ELSE
+$(PROJ).exe : $(CFGOBJS)
+        echo >NUL @<<$(PROJ).crf
+tdecfg.obj+
+cfgcolor.obj+
+cfgfile.obj+
+cfghelp.obj+
+cfgkeys.obj+
+cfgmacro.obj+
+cfgmodes.obj
+$(PROJ).EXE
+
+
+
+<<
+        ilink -a -e "$(LINK) $(LFLAGS) @$(PROJ).crf" $(PROJ)
+!ENDIF
