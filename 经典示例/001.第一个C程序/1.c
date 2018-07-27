@@ -1,6 +1,6 @@
 /* The first C programme */
-#include <stdio.h>				/* ░№║м▒ъ╫╝╩ф╚ы╩ф│Ў═╖╬─╝■ */
-main()						/* ╓ў║п╩¤ */
+#include <stdio.h>				/* я┐╜я┐╜я┐╜╫╝я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜═╖я┐╜─╝я┐╜ */
+main()						/* я┐╜я┐╜я┐╜я┐╜ */
 {
-		printf("Hello World!\n");	/* ┤Є╙б╩ф│Ў╨┼╧в */
+		printf("Hello World!\n");	/* я┐╜я┐╜╙бя┐╜я┐╜я┐╜я┐╜я┐╜╧в */
 }
