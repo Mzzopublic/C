@@ -4,29 +4,30 @@
   
 int status;
 double result,sig,scale;
-int sign(int c)/*´¦ÀíÊýµÄ·ûºÅº¯Êý*/
+int sign(int c)/*å¤„ç†æ•°çš„ç¬¦å·å‡½æ•°*/
 {
-	if(c=='-')/*ÈôÎª¸ººÅ£¬ÖÃ¸ºÊý±ê¼Ç*/
-		sig=-sig;
+	if(c=='-')/*è‹¥ä¸ºè´Ÿå·ï¼Œç½®è´Ÿæ•°æ ‡è®°*/
+		sig=-sig; 
+	// .
 }
 
-int integer(int c)/*×ª»»ÕûÊý²¿·Ö£¬×ª»»Ò»Î»ÕûÊýÎ»*/
+int integer(int c)/*è½¬æ¢æ•´æ•°éƒ¨åˆ†ï¼Œè½¬æ¢ä¸€ä½æ•´æ•°ä½*/
 {
 	result=result*10.0+c-'0';
 }
 
-int decimal(int c)/*×ª»»Ð¡Êý²¿·Ö£¬×ª»»Ò»Î»Ð¡ÊýÎ»*/
+int decimal(int c)/*è½¬æ¢å°æ•°éƒ¨åˆ†ï¼Œè½¬æ¢ä¸€ä½å°æ•°ä½*/
 {
 	result+=(c-'0')*scale;
 	scale/=10.0;
 }
-/*×´Ì¬±í*/
+/*çŠ¶æ€è¡¨*/
 int statbl[ ][4]={{   1,2,3,ERR},/*0*/
 	        {ERR,2,3,ERR},/*1*/
 	        {OK,2,4,OK},/*2*/
 	        {ERR,4,ERR,ERR},/*3*/
 	        {OK,4,OK,OK}};/*4*/
-/*×ª»»º¯Êý±í*/
+/*è½¬æ¢å‡½æ•°è¡¨*/
 int(*funtbl[ ][4])( )={{sign,integer,NULL,NULL},
 	                {NULL,integer,NULL,NULL},
 	                {NULL,integer,NULL,NULL},		
@@ -40,29 +41,29 @@ int readreal(double *dp)
 	result=0.0;
 	scale=0.1;
 
-	while((c=getchar( ))==' '||c=='\n'||c=='\t');/*Ìø¹ýÇ°µ¼¿Õ°×·û*/
-	status=0;/*ÖÃ³õÊ¼×´Ì¬*/
+	while((c=getchar( ))==' '||c=='\n'||c=='\t');/*è·³è¿‡å‰å¯¼ç©ºç™½ç¬¦*/
+	status=0;/*ç½®åˆå§‹çŠ¶æ€*/
 	for(;;)
 	{
-		/*·ÖÀàµ±Ç°×Ö·û*/
-		if(c=='+'||c=='-') ckind=0;/*ÊýµÄ·ûºÅ×Ö·û*/
-		else if(c>='0'&&c<='9') ckind=1;/*Êý×Ö·û*/
-		else if(c=='.') ckind=2;/*Ð¡Êýµã*/
-		else ckind=3;/* ÆäËü×Ö·û */
+		/*åˆ†ç±»å½“å‰å­—ç¬¦*/
+		if(c=='+'||c=='-') ckind=0;/*æ•°çš„ç¬¦å·å­—ç¬¦*/
+		else if(c>='0'&&c<='9') ckind=1;/*æ•°å­—ç¬¦*/
+		else if(c=='.') ckind=2;/*å°æ•°ç‚¹*/
+		else ckind=3;/* å…¶å®ƒå­—ç¬¦ */
 
-		if(funtbl[status][ckind])/* ÈçÓÐ×ª»»º¯Êý */
-			(*funtbl[status][ckind])(c);/* Ö´ÐÐÏàÓ¦µÄº¯Êý */
-		status=statbl[status][ckind];/*ÉèÖÃÐÂµÄ×´Ì¬*/
-		if(status==ERR||status==OK)break;/* ½áÊø£º³ö´í»ò³É¹¦ */
+		if(funtbl[status][ckind])/* å¦‚æœ‰è½¬æ¢å‡½æ•° */
+			(*funtbl[status][ckind])(c);/* æ‰§è¡Œç›¸åº”çš„å‡½æ•° */
+		status=statbl[status][ckind];/*è®¾ç½®æ–°çš„çŠ¶æ€*/
+		if(status==ERR||status==OK)break;/* ç»“æŸï¼šå‡ºé”™æˆ–æˆåŠŸ */
 		c=getchar();
 	}
-	ungetc(c,stdin); /* ¹é»¹ÊýµÂ½áÊø·û */
+	ungetc(c,stdin); /* å½’è¿˜æ•°å¾·ç»“æŸç¬¦ */
 	if(status==OK)
 	{
-		*dp=result *sig;/* ¶ÁÈëÊý°´Ö¸Õë²ÎÊý¸³¸øÏàÓ¦±äÁ¿ */
+		*dp=result *sig;/* è¯»å…¥æ•°æŒ‰æŒ‡é’ˆå‚æ•°èµ‹ç»™ç›¸åº”å˜é‡ */
 		return 1;
 	}
-	return -1; /* ³ö´í·µ»Ø */
+	return -1; /* å‡ºé”™è¿”å›ž */
 }
 main()
 {
