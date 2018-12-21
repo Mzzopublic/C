@@ -125,11 +125,11 @@ void deletenode (PNODE *n) {
 	if ((*n)->right == NULL) {
 	    tmp = *n;
 	    *n = (*n)->left;
-	    free_node (n);
+	    free_node (&tmp);
 	} else if ((*n)->left == NULL) {
 	    tmp = *n;
 	    *n = (*n)->right;
-	    free_node (n);
+	    free_node (&tmp);
 	} else {
         for (tmp = (*n)->right; tmp->left != NULL; tmp = tmp->left);
         tmp->left = (*n)->left;
