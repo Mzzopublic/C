@@ -1,11 +1,17 @@
-/* ÊäÈëÁ½¸ö¸¡µãÊı£¬Êä³öËüÃÇÖĞµÄ´óÊı */
+/* è¾“å…¥ä¸¤ä¸ªæµ®ç‚¹æ•°ï¼Œè¾“å‡ºå®ƒä»¬ä¸­çš„å¤§æ•° */
 #include <stdio.h>
-main()
+int main() //å‡½æ•°å®šä¹‰è¦æœ‰ç±»å‹
 {
-	float x,y,c;				/* ±äÁ¿¶¨Òå */
-	printf("Please input x and y:\n");	/* ÌáÊ¾ÓÃ»§ÊäÈëÊı¾İ */
+	double x,y,c;				/* å˜é‡å®šä¹‰ *///æˆ‘å–œæ¬¢åŒç²¾åº¦æµ®ç‚¹æ•°
+	printf("Please input two real numbers:\n");	/* æç¤ºç”¨æˆ·è¾“å…¥æ•°æ® */
 	scanf("%f%f",&x,&y);
-	c=x>y?x:y;				/* ¼ÆËãc=max(x,y) */
-	printf("MAX of (%f,%f) is %f",x,y,c);	/* Êä³öc */
+	if(x>y){
+		c=x;
+	}
+	else
+		c=y;
+	
+	/* è®¡ç®—c=max(x,y) */
+	printf("MAX of (%f,%f) is %f",x,y,c);	/* è¾“å‡ºc */
+	return 0;//è¿”å›ï¼ï¼ï¼
 }
-

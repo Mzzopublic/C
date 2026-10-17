@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <conio.h>
-void main(void)
+int main(void)
 {
 	int i,j,x,y;
 	clrscr();
-	printf("\n\n  * * * �˷��ھ��� * * * \n\n");
+	printf("\n\n  * * * ³Ë·¨¿Ú¾÷±í * * * \n\n");//?????全是乱码
 	x=9;
 	y=5;
 	for(i=1;i<=9;i++)
@@ -35,7 +35,8 @@ void main(void)
 		x+=3;
 	}
 	printf("\n\n");
-}
+	return 0;
+}//明显语法错误这么多？我还得一个一个给你改
 
 
 

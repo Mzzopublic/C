@@ -1,10 +1,11 @@
 /* Input two numbers, output the product */
 #include <stdio.h>
-main()
+int main()
 {
-		int x,y,m;				/* ¶¨ÒåÕûĞÍ±äÁ¿x£¬y£¬m */
-		printf("Please input x and y\n");	/* Êä³öÌáÊ¾ĞÅÏ¢ */
-		scanf("%d%d",&x,&y);			/* ¶ÁÈëÁ½¸ö³ËÊı£¬¸³¸øx£¬y±äÁ¿ */
-		m=x*y;					/* ¼ÆËãÁ½¸ö³ËÊıµÄ»ı£¬¸³¸ø±äÁ¿m */
-		printf("%d * %d = %d\n",x,y,m);		/* Êä³ö½á¹û */
-}
+	int x,y,m;				/* å®šä¹‰æ•´å‹å˜é‡xï¼Œyï¼Œm */
+	printf("Please input two integers\n");	/* è¾“å‡ºæç¤ºä¿¡æ¯ */
+	scanf("%d%d",&x,&y);			/* è¯»å…¥ä¸¤ä¸ªä¹˜æ•°ï¼Œèµ‹ç»™xï¼Œyå˜é‡ */
+	m=x*y;					/* è®¡ç®—ä¸¤ä¸ªä¹˜æ•°çš„ç§¯ï¼Œèµ‹ç»™å˜é‡m */
+	printf("%d * %d = %d\n",x,y,m);		/* è¾“å‡ºç»“æœ */
+	return 0;
+}//è¿™ä¸ªä»“åº“æˆ‘è¿›æ¥äº†æˆ‘æƒ³æ€ä¹ˆæ”¹å°±æ€ä¹ˆæ”¹
